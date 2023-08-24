@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Guitarra from '../components/Guitarra.astro'
+
+const url = `${import.meta.env.PUBLIC_API_URL}/guitarras?populate=imagen`
+const respuesta = await fetch(url)
+const { data } = await respuesta.json()
+---
+
+<Layout
+  title='Tienda Virtual'
+  description='Página de instrumentos musicales, guitarras, cursos, blog y más'
+>
+  <main class='contenedor'>
+    <h1 class='heading'>Nuestra Colección</h1>
+
+    <div class='grid'>
+      {
+        data?.map((guitarra) => (
+          <Guitarra
+            nombre={guitarra.attributes.nombre}
+            descripcion={guitarra.attributes.descripcion}
+            url={guitarra.attributes.url}
+            precio={guitarra.attributes.precio}
+            imagen={guitarra.attributes.imagen.data.attributes.url}
+          />
+        ))
+      }
+    </div>
+  </main>
+</Layout>
+
+<style></style>
